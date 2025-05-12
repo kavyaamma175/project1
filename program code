@@ -77,3 +77,159 @@ if X_train.size > 0 and X_test.size > 0:
 else:
   print("Not enough data to train the model. Increase the date range or reduce seq_len.")
   plt.show()
+Requirement already satisfied: yfinance in /usr/local/lib/python3.11/dist-packages (0.2.61)
+Requirement already satisfied: pandas>=1.3.0 in /usr/local/lib/python3.11/dist-packages (from yfinance) (2.2.2)
+Requirement already satisfied: numpy>=1.16.5 in /usr/local/lib/python3.11/dist-packages (from yfinance) (2.0.2)
+Requirement already satisfied: requests>=2.31 in /usr/local/lib/python3.11/dist-packages (from yfinance) (2.32.3)
+Requirement already satisfied: multitasking>=0.0.7 in /usr/local/lib/python3.11/dist-packages (from yfinance) (0.0.11)
+Requirement already satisfied: platformdirs>=2.0.0 in /usr/local/lib/python3.11/dist-packages (from yfinance) (4.3.7)
+Requirement already satisfied: pytz>=2022.5 in /usr/local/lib/python3.11/dist-packages (from yfinance) (2025.2)
+Requirement already satisfied: frozendict>=2.3.4 in /usr/local/lib/python3.11/dist-packages (from yfinance) (2.4.6)
+Requirement already satisfied: peewee>=3.16.2 in /usr/local/lib/python3.11/dist-packages (from yfinance) (3.18.1)
+Requirement already satisfied: beautifulsoup4>=4.11.1 in /usr/local/lib/python3.11/dist-packages (from yfinance) (4.13.4)
+Requirement already satisfied: curl_cffi>=0.7 in /usr/local/lib/python3.11/dist-packages (from yfinance) (0.10.0)
+Requirement already satisfied: protobuf>=3.19.0 in /usr/local/lib/python3.11/dist-packages (from yfinance) (5.29.4)
+Requirement already satisfied: websockets>=13.0 in /usr/local/lib/python3.11/dist-packages (from yfinance) (15.0.1)
+Requirement already satisfied: soupsieve>1.2 in /usr/local/lib/python3.11/dist-packages (from beautifulsoup4>=4.11.1->yfinance) (2.7)
+Requirement already satisfied: typing-extensions>=4.0.0 in /usr/local/lib/python3.11/dist-packages (from beautifulsoup4>=4.11.1->yfinance) (4.13.2)
+Requirement already satisfied: cffi>=1.12.0 in /usr/local/lib/python3.11/dist-packages (from curl_cffi>=0.7->yfinance) (1.17.1)
+Requirement already satisfied: certifi>=2024.2.2 in /usr/local/lib/python3.11/dist-packages (from curl_cffi>=0.7->yfinance) (2025.4.26)
+Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.11/dist-packages (from pandas>=1.3.0->yfinance) (2.9.0.post0)
+Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.11/dist-packages (from pandas>=1.3.0->yfinance) (2025.2)
+Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.11/dist-packages (from requests>=2.31->yfinance) (3.4.1)
+Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.11/dist-packages (from requests>=2.31->yfinance) (3.10)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.11/dist-packages (from requests>=2.31->yfinance) (2.4.0)
+Requirement already satisfied: pycparser in /usr/local/lib/python3.11/dist-packages (from cffi>=1.12.0->curl_cffi>=0.7->yfinance) (2.22)
+Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.11/dist-packages (from python-dateutil>=2.8.2->pandas>=1.3.0->yfinance) (1.17.0)
+[*********************100%***********************]  1 of 1 completedPrice            Close        High         Low        Open     Volume
+Ticker            AAPL        AAPL        AAPL        AAPL       AAPL
+Date                                                                 
+2010-01-04    6.440330    6.455075    6.391277    6.422875  493729600
+2010-01-05    6.451466    6.487879    6.417460    6.458087  601904800
+2010-01-06    6.348845    6.477044    6.342224    6.451464  552160000
+2010-01-07    6.337111    6.379844    6.291067    6.372320  477131200
+2010-01-08    6.379241    6.379843    6.291368    6.328683  447610800
+...                ...         ...         ...         ...        ...
+2023-02-17  151.026947  151.472451  149.343923  150.828947   59144100
+2023-02-21  146.997559  149.789411  146.928265  148.700387   58867200
+2023-02-22  147.423264  148.452873  145.690736  147.383654   51011300
+2023-02-23  147.908371  148.838988  145.769948  148.591484   48394200
+2023-02-24  145.245239  145.720443  144.265118  145.641240   55469600
+
+[3309 rows x 5 columns]
+
+
+/usr/local/lib/python3.11/dist-packages/keras/src/layers/rnn/rnn.py:200: UserWarning:
+
+Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+
+
+[3309 rows x 5 columns]
+
+
+/usr/local/lib/python3.11/dist-packages/keras/src/layers/rnn/rnn.py:200: UserWarning:
+
+Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+
+Epoch 1/50
+83/83 - 3s - 40ms/step - loss: 0.0097
+Epoch 2/50
+83/83 - 0s - 3ms/step - loss: 0.0011
+Epoch 3/50
+83/83 - 0s - 4ms/step - loss: 2.7109e-05
+Epoch 4/50
+83/83 - 0s - 3ms/step - loss: 2.5591e-05
+Epoch 5/50
+83/83 - 0s - 3ms/step - loss: 2.3486e-05
+Epoch 6/50
+83/83 - 0s - 3ms/step - loss: 2.2535e-05
+Epoch 7/50
+83/83 - 0s - 4ms/step - loss: 2.0730e-05
+Epoch 8/50
+83/83 - 0s - 4ms/step - loss: 1.9796e-05
+Epoch 9/50
+83/83 - 0s - 4ms/step - loss: 1.8111e-05
+Epoch 10/50
+83/83 - 0s - 4ms/step - loss: 1.8957e-05
+Epoch 11/50
+83/83 - 1s - 7ms/step - loss: 1.8053e-05
+Epoch 12/50
+83/83 - 0s - 4ms/step - loss: 1.6152e-05
+Epoch 13/50
+83/83 - 0s - 3ms/step - loss: 1.5744e-05
+Epoch 14/50
+83/83 - 0s - 4ms/step - loss: 1.6262e-05
+Epoch 15/50
+83/83 - 0s - 4ms/step - loss: 1.6200e-05
+Epoch 16/50
+83/83 - 0s - 4ms/step - loss: 1.6015e-05
+Epoch 17/50
+83/83 - 0s - 3ms/step - loss: 1.6797e-05
+Epoch 18/50
+83/83 - 0s - 6ms/step - loss: 1.5581e-05
+Epoch 19/50
+83/83 - 0s - 6ms/step - loss: 1.5586e-05
+Epoch 20/50
+83/83 - 1s - 8ms/step - loss: 1.6648e-05
+Epoch 21/50
+83/83 - 1s - 7ms/step - loss: 1.6887e-05
+Epoch 22/50
+83/83 - 0s - 5ms/step - loss: 1.6017e-05
+Epoch 23/50
+83/83 - 0s - 4ms/step - loss: 1.6435e-05
+Epoch 24/50
+83/83 - 0s - 3ms/step - loss: 1.6391e-05
+Epoch 25/50
+83/83 - 0s - 4ms/step - loss: 1.6102e-05
+Epoch 26/50
+83/83 - 0s - 4ms/step - loss: 1.6255e-05
+Epoch 27/50
+83/83 - 0s - 3ms/step - loss: 1.5812e-05
+Epoch 28/50
+83/83 - 0s - 4ms/step - loss: 1.5828e-05
+Epoch 29/50
+83/83 - 0s - 4ms/step - loss: 1.6920e-05
+Epoch 30/50
+83/83 - 0s - 4ms/step - loss: 1.5989e-05
+Epoch 31/50
+83/83 - 0s - 3ms/step - loss: 1.6940e-05
+Epoch 32/50
+83/83 - 0s - 3ms/step - loss: 1.5401e-05
+Epoch 33/50
+83/83 - 0s - 4ms/step - loss: 1.6207e-05
+Epoch 34/50
+83/83 - 0s - 3ms/step - loss: 1.7021e-05
+Epoch 35/50
+83/83 - 0s - 4ms/step - loss: 1.6459e-05
+Epoch 36/50
+83/83 - 0s - 4ms/step - loss: 1.6664e-05
+Epoch 37/50
+83/83 - 0s - 4ms/step - loss: 1.6780e-05
+Epoch 38/50
+83/83 - 0s - 3ms/step - loss: 1.6318e-05
+Epoch 39/50
+83/83 - 0s - 3ms/step - loss: 1.8604e-05
+Epoch 40/50
+83/83 - 0s - 4ms/step - loss: 1.5587e-05
+Epoch 41/50
+83/83 - 0s - 3ms/step - loss: 1.6969e-05
+Epoch 42/50
+83/83 - 0s - 4ms/step - loss: 1.6698e-05
+Epoch 43/50
+83/83 - 0s - 3ms/step - loss: 1.7845e-05
+Epoch 44/50
+83/83 - 0s - 4ms/step - loss: 1.7140e-05
+Epoch 45/50
+83/83 - 0s - 4ms/step - loss: 1.6309e-05
+Epoch 46/50
+83/83 - 0s - 4ms/step - loss: 1.6239e-05
+Epoch 47/50
+83/83 - 0s - 4ms/step - loss: 2.1080e-05
+Epoch 48/50
+83/83 - 1s - 7ms/step - loss: 1.6971e-05
+Epoch 49/50
+83/83 - 0s - 4ms/step - loss: 1.5973e-05
+Epoch 50/50
+83/83 - 0s - 3ms/step - loss: 1.6905e-05
+21/21 ━━━━━━━━━━━━━━━━━━━━ 1s 17ms/step
+RMSE: 0.02
