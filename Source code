@@ -1,0 +1,131 @@
+# stock_prediction.py
+import yfinance as yf
+import numpy as np
+import pandas as pd
+import talib
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from sklearn.preprocessing import MinMaxScaler
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+import streamlit as st
+
+# ====================== 1. Data Collection ======================
+def get_stock_data(ticker, start_date, end_date):
+    """Fetch OHLCV data from Yahoo Finance"""
+    data = yf.download(ticker, start=start_date, end=end_date)
+    data.reset_index(inplace=True)
+    return data
+
+def get_news_headlines(query, api_key):
+    """Scrape news headlines using NewsAPI"""
+    import requests
+    url = f"https://newsapi.org/v2/everything?q={query}&apiKey={api_key}"
+    response = requests.get(url).json()
+    headlines = [article['title'] for article in response['articles']]
+    return pd.DataFrame({
+        'date': pd.to_datetime([article['publishedAt'][:10] for article in response['articles']]),
+        'headline': headlines
+    })
+
+# ====================== 2. Data Preprocessing ======================
+def preprocess_data(df):
+    """Clean and normalize stock data"""
+    # Handle missing values
+    df.fillna(method='ffill', inplace=True)
+    
+    # Remove outliers using IQR
+    Q1 = df['Close'].quantile(0.25)
+    Q3 = df['Close'].quantile(0.75)
+    IQR = Q3 - Q1
+    df = df[~((df['Close'] < (Q1 - 1.5*IQR)) | (df['Close'] > (Q3 + 1.5*IQR)))]
+    
+    # Normalize data
+    scaler = MinMaxScaler()
+    cols_to_scale = ['Open', 'High', 'Low', 'Close', 'Volume']
+    df[cols_to_scale] = scaler.fit_transform(df[cols_to_scale])
+    
+    return df, scaler
+
+# ====================== 3. Feature Engineering ======================
+def add_technical_indicators(df):
+    """Calculate technical indicators"""
+    df['RSI'] = talib.RSI(df['Close'], timeperiod=14)
+    df['SMA_20'] = talib.SMA(df['Close'], timeperiod=20)
+    upper, _, lower = talib.BBANDS(df['Close'], timeperiod=20)
+    df['BB_upper'] = upper
+    df['BB_lower'] = lower
+    return df
+
+def add_sentiment_scores(news_df):
+    """Add sentiment scores to news headlines"""
+    analyzer = SentimentIntensityAnalyzer()
+    news_df['sentiment'] = news_df['headline'].apply(
+        lambda x: analyzer.polarity_scores(x)['compound'])
+    return news_df
+
+# ====================== 4. Model Building ======================
+def create_sequences(data, seq_length):
+    """Prepare time-series sequences for LSTM"""
+    X, y = [], []
+    for i in range(len(data)-seq_length-1):
+        X.append(data[i:(i+seq_length)])
+        y.append(data[i+seq_length])
+    return np.array(X), np.array(y)
+
+def build_lstm_model(input_shape):
+    """Create LSTM model architecture"""
+    model = Sequential([
+        LSTM(64, return_sequences=True, input_shape=input_shape),
+        Dropout(0.2),
+        LSTM(64),
+        Dense(1)
+    ])
+    model.compile(optimizer='adam', loss='mse')
+    return model
+
+# ====================== 5. Deployment ======================
+def main():
+    st.title("AI-Driven Stock Price Predictor")
+    
+    # User inputs
+    ticker = st.text_input("Enter stock ticker (e.g., ^NSEI):", "^NSEI")
+    days = st.slider("Prediction horizon (days):", 1, 7, 1)
+    
+    if st.button("Predict"):
+        with st.spinner("Fetching data and making prediction..."):
+            try:
+                # 1. Data Collection
+                stock_data = get_stock_data(ticker, "2020-01-01", pd.Timestamp.today().strftime('%Y-%m-%d'))
+                news_data = get_news_headlines(ticker.split('^')[-1], "your_newsapi_key")
+                
+                # 2. Preprocessing
+                processed_data, scaler = preprocess_data(stock_data.copy())
+                
+                # 3. Feature Engineering
+                tech_data = add_technical_indicators(processed_data.copy())
+                sentiment_data = add_sentiment_scores(news_data.copy())
+                merged_data = pd.merge(tech_data, sentiment_data, left_on='Date', right_on='date', how='left')
+                merged_data.fillna(0, inplace=True)  # Fill missing sentiment with neutral (0)
+                
+                # 4. Model Prediction
+                seq_length = 30
+                features = merged_data[['Close', 'RSI', 'sentiment']].values
+                X, _ = create_sequences(features, seq_length)
+                
+                model = build_lstm_model((X.shape[1], X.shape[2]))
+                # Load your pre-trained weights here
+                # model.load_weights('model_weights.h5')
+                
+                prediction = model.predict(X[-1:].reshape(1, seq_length, -1))
+                predicted_price = scaler.inverse_transform(
+                    np.concatenate([np.zeros((1,4)), prediction], axis=1))[0][-1]
+                
+                # Show results
+                st.line_chart(stock_data.set_index('Date')['Close'])
+                st.success(f"Predicted price after {days} days: ${predicted_price:.2f}")
+                
+            except Exception as e:
+                st.error(f"Error: {str(e)}")
+
+if __name__ == "__main__":
+    main()
